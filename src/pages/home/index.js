@@ -1,3 +1,57 @@
+
+const renderFinancelist = (data) => {
+  const table = document.getElementById('Finance-table')
+  
+  
+  data.map((item) =>{
+    const tableRow = document.createElement("tr")
+
+     // titulo 
+
+     const titleTd = document.createElement("td")
+     const titleText = document.createTextNode(item.title)
+     titleTd.appendChild(titleText);
+     tableRow.appendChild(titleTd)
+
+      // categoria
+
+    const categoryTd = document.createElement("td")
+    const categoryText = document.createTextNode(item.name)
+    categoryTd.appendChild(categoryText);
+    table.appendChild(categoryTd)
+
+    // data
+
+    const dateTd = document.createElement("td")
+    const dateText = document.createTextNode(new Date(item.date).toLocaleDateString())
+    dateTd.appendChild(dateText);
+    tableRow.appendChild(dateTd)
+
+    // value
+
+    const valueTd = document.createElement("td")
+    valueTd.className = "center"
+    const valueText = document.createTextNode(new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(item.value))
+    valueTd.appendChild(valueText);
+    tableRow.appendChild(valueTd)
+
+
+    // Ação
+
+    const deleteTd = document.createElement("td")
+    deleteTd.className = "right"
+    const deleteText = document.createTextNode("Deletar")
+    deleteTd.appendChild(deleteText);
+    tableRow.appendChild(deleteTd)
+
+
+    // table add tableRow
+
+    table.appendChild(tableRow)
+  })
+}
+
+
 const renderFinanceElements = (data) => {
   const totalItems = data.length
   const revenues = data.filter(item => Number(item.value) > 0).reduce((acc, item) => acc + Number(item.value), 0)
@@ -54,6 +108,7 @@ const onLoadFinancesData = async () => {
 
     const data = await result.json()
     renderFinanceElements(data);
+    renderFinancelist(data);
     return data
 
 
@@ -102,4 +157,5 @@ const onLoadUserInfo = () => {
 window.onload = () => {
   onLoadUserInfo();
   onLoadFinancesData();
+  
 } 
